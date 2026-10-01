@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+const info = JSON.parse(fs.readFileSync(new URL('../../.demo/info.json', import.meta.url), 'utf8'));
+const HOUR = 3600e3, DAY = 24 * HOUR;
+const gt = (ms) => new Date(ms).toISOString().replace(/\.\d{3}Z$/, '+0000');
+const now = Date.now();
+const texts = ['我把每週要做的報表交給排程跑，第一個月就省下八小時。重點不是工具，是先寫清楚什麼算完成。','AI 自動化最常卡在交接：做的人離職，流程就斷了。所以我都先寫規格。','今天幫一個團隊盤流程，發現最花時間的不是做，是等人回覆。','很多人問我要用哪個工具，我的回答都是：先說你每週重複做什麼。','寫 Skill 的時候，每一條規則都附理由，模型才知道什麼時候可以變通。','排程 Agent 要寫死權限，能讀什麼、能寫什麼，不然出事很難查。','教書三年多學到的一件事：講清楚比講很多有用。','週末整理了 28 個 Skill，發現有一半可以合併。','IG 兩個月從 600 到一萬粉，我覺得最重要的是固定頻率。','自動化不是全自動，是把人放在最有判斷價值的地方。','今天試了一個新的工作流程，還在觀察數據。','有人問我 AI 會不會取代工作，我覺得會先取代「重複」這件事。'];
+const threads = texts.map((t, i) => ({ id: String(900000 + i), text: t, timestamp: gt(now - (i * 2.3 + 0.5) * DAY), permalink: `https://www.threads.com/@e2e_max/post/OWN${i}`, shortcode: `OWN${i}`, media_type: 'TEXT_POST', is_quote_post: false }));
+const insights = {};
+threads.forEach((p, i) => { insights[p.id] = { views: 300 + ((i * 737) % 2400), likes: 5 + ((i * 13) % 60), replies: i % 7, reposts: i % 3, quotes: i % 2, shares: i % 4 }; });
+const drafts = JSON.parse(process.argv[2] || '[]');
+const replies = drafts.map((d, i) => ({ id: String(800000 + i), text: d.text, timestamp: gt(now - (d.agoH ?? 2) * HOUR), permalink: `https://www.threads.com/@e2e_max/post/RPL${i}`, shortcode: `RPL${i}`, is_reply: true, media_type: 'TEXT_POST' }));
+replies.forEach((r, i) => { insights[r.id] = { views: 120 + i * 45, likes: 2 + i, replies: 1, reposts: 0, quotes: 0, shares: 0 }; });
+const cfg = { threads: { threads, insights, replies, userInsights: { viewsSeries: [120, 80, 95], likes: 12, replies: 3, reposts: 1, quotes: 0, clicks: [{ value: 4, link_url: 'https://example.com/a' }], followers_count: 1234 } } };
+const r = await fetch(`${info.mock}/__config`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cfg) });
+console.log(r.status);

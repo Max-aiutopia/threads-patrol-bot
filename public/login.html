@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F6F6F2">
+<title>登入｜Threads 海巡</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@900&display=swap">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body class="page-login">
+<main class="login">
+  <h1 class="login-title">Threads 海巡</h1>
+  <p class="login-sub">後台登入</p>
+  <form method="post" action="/login">
+    <!-- 給密碼管理工具認帳號用 -->
+    <input type="text" name="username" value="max" autocomplete="username" hidden>
+    <div class="field">
+      <label for="pw">密碼</label>
+      <input id="pw" name="password" type="password" autocomplete="current-password" required autofocus maxlength="256">
+    </div>
+    <p class="login-msg" id="err" role="alert" hidden></p>
+    <button class="btn" type="submit">登入</button>
+  </form>
+  <p class="login-foot"><a href="/privacy">隱私權政策</a>　<a href="/data-deletion">資料刪除</a></p>
+</main>
+<script>
+  // 只對應固定幾種錯誤代碼，不把網址上的字放進畫面
+  (function () {
+    var e = new URLSearchParams(location.search).get('e');
+    var msg = { '1': '密碼不對，再試一次。', rate: '密碼錯太多次了，15 分鐘後再試。' }[e];
+    if (!msg) return;
+    var p = document.getElementById('err');
+    p.textContent = msg;
+    p.hidden = false;
+    document.getElementById('pw').setAttribute('aria-invalid', 'true');
+  })();
+</script>
+</body>
+</html>

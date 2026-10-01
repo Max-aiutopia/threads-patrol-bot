@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F6F6F2">
+<title>Threads 海巡｜後台</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700;900&display=swap">
+<link rel="stylesheet" href="/assets/style.css">
+<script type="module" src="/assets/app.js"></script>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap mast-row">
+    <a class="brand" href="#overview">Threads 海巡</a>
+    <p class="mast-status" id="mast-status" aria-live="polite">讀取中…</p>
+    <form class="mast-out-form" method="post" action="/logout"><button class="mast-out" type="submit">登出</button></form>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="後台分頁">
+  <div class="wrap tabs-row" id="tabs">
+    <a class="tab" href="#overview" data-tab="overview">總覽</a>
+    <a class="tab" href="#comments" data-tab="comments">留言紀錄</a>
+    <a class="tab" href="#personas" data-tab="personas">人設與產品</a>
+    <a class="tab" href="#posts" data-tab="posts">我的貼文</a>
+    <a class="tab" href="#settings" data-tab="settings">安全設定</a>
+    <a class="tab" href="#usage" data-tab="usage">用量</a>
+    <a class="tab" href="#privacy" data-tab="privacy">資料與隱私</a>
+  </div>
+</nav>
+
+<div class="band" id="pause-band" hidden>
+  <div class="wrap band-row">
+    <p><strong>暫停中</strong>　<span id="pause-text"></span></p>
+    <button class="btn btn-sm btn-danger" type="button" id="pause-resume">恢復</button>
+  </div>
+</div>
+
+<main class="wrap">
+  <section class="panel" id="panel-overview" data-panel="overview" hidden>
+    <div class="ph">
+      <h1 id="ov-date">總覽</h1>
+      <p>自己帳號的粉絲與瀏覽，加上近 7 天海巡的留言。數字每天 23:50 更新一次。</p>
+    </div>
+    <div class="panel-body"></div>
+  </section>
+
+  <section class="panel" id="panel-comments" data-panel="comments" hidden>
+    <div class="ph">
+      <h1>留言紀錄</h1>
+      <p>在 Threads 真的送出、而且比對回來的留言。每小時 15 分比對一次，送出後 1、24、72 小時各記一次觀看。</p>
+    </div>
+    <div class="panel-body"></div>
+  </section>
+
+  <section class="panel" id="panel-personas" data-panel="personas" hidden>
+    <div class="ph">
+      <h1>人設與產品</h1>
+      <p>人設只定語氣，不假冒身分。產品資料卡上沒寫的事，留言裡就不會出現。</p>
+    </div>
+    <div class="panel-body"></div>
+  </section>
+
+  <section class="panel" id="panel-posts" data-panel="posts" hidden>
+    <div class="ph">
+      <h1>我的貼文</h1>
+      <p>近 90 天自己發的貼文，數字是最近一次快照。</p>
+    </div>
+    <div class="panel-body"></div>
+  </section>
+
+  <section class="panel" id="panel-settings" data-panel="settings" hidden>
+    <div class="ph">
+      <h1>安全設定</h1>
+      <p>這些上限擋在「開 Threads 回覆」的連結上。數字是保守值，Meta 沒有公開留言頻率門檻。</p>
+    </div>
+    <div class="panel-body"></div>
+  </section>
+
+  <section class="panel" id="panel-usage" data-panel="usage" hidden>
+    <div class="ph">
+      <h1>用量</h1>
+      <p>Claude 花費、LINE push 則數、Threads 授權，還有排程跑得怎樣。</p>
+    </div>
+    <div class="panel-body"></div>
+  </section>
+
+  <section class="panel" id="panel-privacy" data-panel="privacy" hidden>
+    <div class="ph">
+      <h1>資料與隱私</h1>
+      <p>存了什麼、存多久、怎麼刪。</p>
+    </div>
+    <div class="panel-body"></div>
+  </section>
+</main>
+
+<div class="toast is-hidden" id="toast" role="status" aria-live="polite"></div>
+<noscript><p class="wrap">後台需要開啟 JavaScript。</p></noscript>
+</body>
+</html>

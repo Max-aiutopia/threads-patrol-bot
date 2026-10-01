@@ -1,0 +1,35 @@
+# 本機開發用的 secret 範本。
+# 用法：cp .dev.vars.example .dev.vars，再把值填進 .dev.vars（.dev.vars 已在 .gitignore，不會進版控）。
+# 正式環境不要用檔案，一個一個跑 `npx wrangler secret put <名稱>` 貼上去。
+# 所有真的值都放密碼管理器，不要貼進任何對話框。
+# 跑 e2e 測試不需要這個檔：test/e2e/run.mjs 會自己在 .e2e/ 產生假值。
+
+# LINE Developers Console → 你的 Messaging API channel → Basic settings → Channel secret
+LINE_CHANNEL_SECRET=
+
+# 同一個 channel → Messaging API 分頁 → Channel access token (long-lived) → Issue
+# 不會過期、每個 channel 只有 1 組，重發後舊的立刻失效
+LINE_CHANNEL_ACCESS_TOKEN=
+
+# Max 自己的 LINE userId（U 開頭，共 33 字元）。Basic settings 最下面的「Your user ID」
+# bot 只回這個人，其他人傳訊息一律不理
+LINE_ADMIN_USER_ID=
+
+# developers.facebook.com → 你的 app → Threads 使用案例的設定頁
+# 建 app 時會有兩組 ID／secret，要用「Threads 專用」那組
+THREADS_APP_ID=
+THREADS_APP_SECRET=
+
+# console.anthropic.com → API Keys → Create Key
+ANTHROPIC_API_KEY=
+
+# 後台登入密碼，至少 12 個字（太短會拒絕登入）。產生方式：openssl rand -base64 18
+DASH_PASSWORD=
+
+# 簽後台 session cookie 用，32 bytes 以上的隨機值。產生方式：openssl rand -base64 32
+# 換掉這個值 = 所有已登入的裝置都要重新登入
+SESSION_SECRET=
+
+# 加密 Threads token 的 AES-256-GCM 金鑰，必須是「base64 編碼、剛好 32 bytes」。產生方式：openssl rand -base64 32
+# 換掉這個值 = 已存的 Threads token 解不開，要到後台重新連結 Threads
+TOKEN_ENC_KEY=

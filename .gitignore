@@ -1,0 +1,6 @@
+node_modules
+.wrangler/
+.dev.vars
+.e2e/
+.demo/
+.DS_Store

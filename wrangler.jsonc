@@ -1,0 +1,53 @@
+{
+  // Threads 海巡機器人：一支 Worker 包辦 LINE webhook、/go/ 轉址、排程、後台
+  "name": "threads-patrol-bot",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "patrol-db",
+      // 先跑 `npx wrangler d1 create patrol-db`，把印出來的 database_id 貼在下面
+      "database_id": "<your-d1-database-id>",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "queues": {
+    "producers": [{ "binding": "JOBS", "queue": "patrol-jobs" }],
+    "consumers": [
+      {
+        "queue": "patrol-jobs",
+        // 預設會等 5 秒湊批，會吃掉 LINE reply token 的時間，所以關掉
+        "max_batch_size": 1,
+        "max_batch_timeout": 0,
+        "max_retries": 2
+      }
+    ]
+  },
+  "triggers": {
+    // 全部是 UTC。台北 = UTC+8
+    "crons": [
+      "15 * * * *",   // 每小時 :15 比對已送出的留言、抓留言成效
+      "50 15 * * *",  // 台北 23:50 每日快照
+      "30 0 * * *",   // 台北 08:30 早報
+      "0 19 * * SUN"  // 台北週一 03:00 token 續期＋清理
+    ]
+  },
+  "vars": {
+    "PUBLIC_BASE_URL": "https://threads-patrol-bot.<your-subdomain>.workers.dev",
+    "LINE_API_BASE": "https://api.line.me",
+    "LINE_DATA_API_BASE": "https://api-data.line.me",
+    "THREADS_API_BASE": "https://graph.threads.net",
+    "THREADS_AUTH_URL": "https://threads.com/oauth/authorize",
+    "CLAUDE_API_BASE": "https://api.anthropic.com"
+    // Meta 後台登記的 OAuth redirect URI 必須跟 `${PUBLIC_BASE_URL}/auth/threads/callback` 一字不差（沒有結尾斜線）。
+    // 後台自動補了斜線的話，在這裡加 "THREADS_REDIRECT_URI": "https://…/auth/threads/callback/" 對齊
+  },
+  "observability": { "enabled": true }
+}
